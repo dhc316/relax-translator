@@ -1,0 +1,31 @@
+.local/
+android/.gradle/
+android/local.properties
+android/**/build/
+android/.kotlin/
+**/__pycache__/
+*.py[cod]
+**/signing.properties
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.hprof
+.DS_Store
+Thumbs.db
+
+# Personal reference images and their original computer/QQ paths stay local.
+references/
+docs/参考图清单.json
+
+# Current signed delivery only. Historical builds and local evidence stay local.
+artifacts/*
+!artifacts/v0.6.0/
+artifacts/v0.6.0/*
+!artifacts/v0.6.0/relax-translator-v0.6.0.apk
+!artifacts/v0.6.0/verification.json
+!artifacts/v0.6.0/smoke-android11.json
+!artifacts/v0.6.0/smoke-android15.json

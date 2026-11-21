@@ -1,0 +1,19 @@
+{
+  "version": "0.6.0",
+  "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+  "android": "15",
+  "passed": true,
+  "upgrade": {
+    "from": "0.5.1",
+    "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
+    "preset_and_history_preserved": true
+  },
+  "checks": [
+    "signed release installed",
+    "new app name on home and sidebar",
+    "translation mark rendered in UI",
+    "theme badge removed from settings header",
+    "upgrade preserved preset and original translation",
+    "detail readings retained and no false correction section"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "name": "轻松翻译",
+  "englishName": "Relax Translator",
+  "version": "0.6.0",
+  "versionCode": 8,
+  "generatedAt": "2026-11-22T05:29:23.070634+08:00",
+  "applicationId": "com.yijian.translate",
+  "applicationIdPreservedForUpgrade": true,
+  "minimumAndroidApi": 26,
+  "targetAndroidApi": 35,
+  "apk": {
+    "file": "relax-translator-v0.6.0.apk",
+    "sha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+    "bytes": 1788890,
+    "sameSigningKey": true
+  },
+  "source": {
+    "file": "relax-translator-v0.6.0-source.zip",
+    "sha256": "a6bc2f4715764f542194eea0d8941ee4ae7c3fff562b6063178cd60dcf6e25fa",
+    "files": 101,
+    "personalReferencesAndCredentialsExcluded": true
+  },
+  "unitTests": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "androidFlowTests": {
+    "tests": 22,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 21
+  },
+  "releaseSmokeChecks": {
+    "android11": {
+      "version": "0.6.0",
+      "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+      "android": "11",
+      "passed": true,
+      "upgrade": {
+        "from": "0.5.1",
+        "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
+        "preset_and_history_preserved": true
+      },
+      "checks": [
+        "signed release installed",
+        "new app name on home and sidebar",
+        "translation mark rendered in UI",
+        "theme badge removed from settings header",
+        "upgrade preserved preset and original translation",
+        "detail readings retained and no false correction section"
+      ]
+    },
+    "android15": {
+      "version": "0.6.0",
+      "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+      "android": "15",
+      "passed": true,
+      "upgrade": {
+        "from": "0.5.1",
+        "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
+        "preset_and_history_preserved": true
+      },
+      "checks": [
+        "signed release installed",
+        "new app name on home and sidebar",
+        "translation mark rendered in UI",
+        "theme badge removed from settings header",
+        "upgrade preserved preset and original translation",
+        "detail readings retained and no false correction section"
+      ]
+    }
+  },
+  "productScreenshots": {
+    "version": "0.6.0",
+    "android": "15",
+    "passed": true,
+    "actualScreenshots": true,
+    "providerRequests": false,
+    "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+    "screenshots": {
+      "home": {
+        "file": "docs/assets/screenshots/home.png",
+        "sha256": "354908114fe8b7719c5fdea4be92cd5d3f7e8ab81ad42d3bc0c08b7804cb8f58"
+      },
+      "translation": {
+        "file": "docs/assets/screenshots/translation.png",
+        "sha256": "38897e5d4ea1af66b9ebfb512196dd659fdc4515e9db362c8ae7d4d6c68580df"
+      },
+      "vocabulary": {
+        "file": "docs/assets/screenshots/vocabulary.png",
+        "sha256": "3ff9b80bacb5ee660f1b8f01107f8cc5500c774b6de376c4230e1f200ee2b7b8"
+      },
+      "japanese": {
+        "file": "docs/assets/screenshots/japanese.png",
+        "sha256": "76b5919371c05f4fcf0aa6d2f2e7c201d70cddfee2ae2aa3764700bbde775350"
+      },
+      "context": {
+        "file": "docs/assets/screenshots/context.png",
+        "sha256": "bb5c00a9ac9d374e87cdcb969262e5cebe1af144abe5502aef356afca33966d4"
+      },
+      "settings": {
+        "file": "docs/assets/screenshots/settings.png",
+        "sha256": "d197f79333f79c1795eab6b857d4a8c7e7a4fd19d53e79b27711c4673b064226"
+      },
+      "models": {
+        "file": "docs/assets/screenshots/models.png",
+        "sha256": "c21c8e3faac7980219da19a7f8fbef48cbfe9c06a9115c7888194936f890bfbb"
+      }
+    }
+  },
+  "remoteModelProviderCalls": false
+}

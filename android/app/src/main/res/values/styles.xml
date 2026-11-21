@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.RelaxTranslator" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#E7ECFC</item>
+        <item name="android:navigationBarColor">#F1F0F9</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorAccent">#526CC2</item>
+        <item name="android:windowBackground">#E7ECFC</item>
+    </style>
+</resources>
