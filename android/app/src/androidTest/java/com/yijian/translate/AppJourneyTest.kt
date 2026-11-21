@@ -324,12 +324,17 @@ class AppJourneyTest {
         compose.onNodeWithText("设置这个预设").performClick()
         compose.onNodeWithText("预设名称，如：工作邮件").performTextReplacement("Work")
         compose.onNodeWithText("补充翻译要求").performTextReplacement("Be polite and concise.")
-        back()
         compose.onNodeWithText("完成").performClick()
         compose.waitUntil(10000) { AppStore(context).load().presets.last().name == "Work" }
         assertEquals("", compose.onNodeWithTag("draftInput").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.EditableText].text)
         compose.onNodeWithTag("draftInput").performTextInput("Draft B")
-        back()
+        // Semantics text entry may not open the IME; Back can finish the activity.
+        scenario!!.onActivity { activity ->
+            val view = activity.currentFocus ?: activity.window.decorView
+            (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager)
+                .hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        compose.waitForIdle()
         scenario!!.onActivity { androidx.lifecycle.ViewModelProvider(it)[AppViewModel::class.java].choosePreset("first") }
         compose.onNodeWithTag("draftInput").assertTextEquals("Draft A")
         val second = AppStore(context).load().presets.last().id

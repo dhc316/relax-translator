@@ -1,10 +1,11 @@
 {
-  "version": "0.6.0",
-  "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+  "version": "1.0.0",
+  "versionCode": 9,
+  "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
   "android": "11",
   "passed": true,
   "upgrade": {
-    "from": "0.5.1",
+    "from": "0.6.0",
     "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
     "preset_and_history_preserved": true
   },

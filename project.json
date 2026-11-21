@@ -3,11 +3,11 @@
   "Folder": "08_LLM翻译App",
   "UpdatedDate": "2026-11-22",
   "Timezone": "Asia/Shanghai",
-  "Stage": "0.6.0 轻松翻译，已通过构建与安装验证",
+  "Stage": "1.0.0 轻松翻译正式版",
   "DevelopmentStarted": true,
-  "Version": "0.6.0",
+  "Version": "1.0.0",
   "ReferenceCount": 19,
-  "Apk": "artifacts/v0.6.0/relax-translator-v0.6.0.apk",
+  "Apk": "artifacts/v1.0.0/relax-translator-v1.0.0.apk",
   "UnitTestsPassed": 58,
   "AndroidFlowTestsPassed": 22,
   "ReleaseCheckedAndroidVersions": [
@@ -16,7 +16,7 @@
   ],
   "ExternalProviderCredentialsRequired": true,
   "EnglishName": "Relax Translator",
-  "VersionCode": 8,
+  "VersionCode": 9,
   "Repository": "https://github.com/dhc316/relax-translator",
-  "RepositoryVisibility": "private"
+  "RepositoryVisibility": "public"
 }

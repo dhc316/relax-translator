@@ -1,23 +1,23 @@
 {
   "name": "轻松翻译",
   "englishName": "Relax Translator",
-  "version": "0.6.0",
-  "versionCode": 8,
-  "generatedAt": "2026-11-22T05:29:23.070634+08:00",
+  "version": "1.0.0",
+  "versionCode": 9,
+  "generatedAt": "2026-11-22T06:18:29.114763+08:00",
   "applicationId": "com.yijian.translate",
   "applicationIdPreservedForUpgrade": true,
   "minimumAndroidApi": 26,
   "targetAndroidApi": 35,
   "apk": {
-    "file": "relax-translator-v0.6.0.apk",
-    "sha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+    "file": "relax-translator-v1.0.0.apk",
+    "sha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
     "bytes": 1788890,
     "sameSigningKey": true
   },
   "source": {
-    "file": "relax-translator-v0.6.0-source.zip",
-    "sha256": "a6bc2f4715764f542194eea0d8941ee4ae7c3fff562b6063178cd60dcf6e25fa",
-    "files": 101,
+    "file": "relax-translator-v1.0.0-source.zip",
+    "sha256": "05e290fe450be7d38a8901710701e45229539662f21110ab6cb40a50a8bca187",
+    "files": 105,
     "personalReferencesAndCredentialsExcluded": true
   },
   "unitTests": {
@@ -38,12 +38,13 @@
   },
   "releaseSmokeChecks": {
     "android11": {
-      "version": "0.6.0",
-      "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+      "version": "1.0.0",
+      "versionCode": 9,
+      "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
       "android": "11",
       "passed": true,
       "upgrade": {
-        "from": "0.5.1",
+        "from": "0.6.0",
         "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
         "preset_and_history_preserved": true
       },
@@ -57,12 +58,13 @@
       ]
     },
     "android15": {
-      "version": "0.6.0",
-      "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+      "version": "1.0.0",
+      "versionCode": 9,
+      "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
       "android": "15",
       "passed": true,
       "upgrade": {
-        "from": "0.5.1",
+        "from": "0.6.0",
         "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
         "preset_and_history_preserved": true
       },
@@ -77,40 +79,40 @@
     }
   },
   "productScreenshots": {
-    "version": "0.6.0",
+    "version": "1.0.0",
     "android": "15",
     "passed": true,
     "actualScreenshots": true,
     "providerRequests": false,
-    "apkSha256": "81375a5f0ab728607a4e2b434a93d76172ae2fa775590dd735403dc288ea99ba",
+    "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
     "screenshots": {
       "home": {
         "file": "docs/assets/screenshots/home.png",
-        "sha256": "354908114fe8b7719c5fdea4be92cd5d3f7e8ab81ad42d3bc0c08b7804cb8f58"
+        "sha256": "bca9463082cbf0e6c36ab8fed0e4598438c7df5ffe094146a7f0831bcf9a8ddf"
       },
       "translation": {
         "file": "docs/assets/screenshots/translation.png",
-        "sha256": "38897e5d4ea1af66b9ebfb512196dd659fdc4515e9db362c8ae7d4d6c68580df"
+        "sha256": "37514bfc169e8026dc625eb1988fc0f7b232d27875bf5cfa67591889f6d591c2"
       },
       "vocabulary": {
         "file": "docs/assets/screenshots/vocabulary.png",
-        "sha256": "3ff9b80bacb5ee660f1b8f01107f8cc5500c774b6de376c4230e1f200ee2b7b8"
+        "sha256": "90eb94295736ebffc653f54345dca0ef30e14e340be3d1367f890ea320afb685"
       },
       "japanese": {
         "file": "docs/assets/screenshots/japanese.png",
-        "sha256": "76b5919371c05f4fcf0aa6d2f2e7c201d70cddfee2ae2aa3764700bbde775350"
+        "sha256": "708b73b54a8bd415db59fb9182c112f06697b43a4466b550fc6dc2c6e390dbcb"
       },
       "context": {
         "file": "docs/assets/screenshots/context.png",
-        "sha256": "bb5c00a9ac9d374e87cdcb969262e5cebe1af144abe5502aef356afca33966d4"
+        "sha256": "5f40d50987223d1ff1fd45f03b74afade83dbea883e69f24de2d18fa1bdbc0bf"
       },
       "settings": {
         "file": "docs/assets/screenshots/settings.png",
-        "sha256": "d197f79333f79c1795eab6b857d4a8c7e7a4fd19d53e79b27711c4673b064226"
+        "sha256": "03e946a5778d64305c69832338fe88d9e8e092c06f42aad16a52f9793d58765f"
       },
       "models": {
         "file": "docs/assets/screenshots/models.png",
-        "sha256": "c21c8e3faac7980219da19a7f8fbef48cbfe9c06a9115c7888194936f890bfbb"
+        "sha256": "cc1ecc5521a3040e948c61b136ee33752f7f2990af27a309a7ebc6383970e885"
       }
     }
   },
