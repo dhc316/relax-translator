@@ -11,6 +11,10 @@ private data class BranchReply(val full: Boolean, val result: Translation? = nul
 /** Both calls use the exact same frozen input/context. Neither branch waits for the other to start. */
 suspend fun TranslationClient.translateParallel(snapshot: RequestSnapshot, key: String, imageData: String? = null,
     onUpdate: (TranslationUpdate) -> Unit) = supervisorScope {
+    if (!snapshot.preset.extras.requestsAny) {
+        onUpdate(TranslationUpdate(translateFast(snapshot, key, imageData), "complete"))
+        return@supervisorScope
+    }
     val replies = Channel<BranchReply>(2)
     fun request(full: Boolean) = launch {
         val reply = try {

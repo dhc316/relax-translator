@@ -1,33 +1,33 @@
 {
   "name": "轻松翻译",
   "englishName": "Relax Translator",
-  "version": "1.0.0",
-  "versionCode": 9,
-  "generatedAt": "2026-11-22T06:18:29.114763+08:00",
+  "version": "1.1.0",
+  "versionCode": 10,
+  "generatedAt": "2026-11-25T00:09:54.424702+08:00",
   "applicationId": "com.yijian.translate",
   "applicationIdPreservedForUpgrade": true,
   "minimumAndroidApi": 26,
   "targetAndroidApi": 35,
   "apk": {
-    "file": "relax-translator-v1.0.0.apk",
-    "sha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
-    "bytes": 1788890,
+    "file": "relax-translator-v1.1.0.apk",
+    "sha256": "1b5b8ec0ff94035d6343c3938d4655b3bca7fd40d2d93ae6eb60faf86dbc8203",
+    "bytes": 1805270,
     "sameSigningKey": true
   },
   "source": {
-    "file": "relax-translator-v1.0.0-source.zip",
-    "sha256": "05e290fe450be7d38a8901710701e45229539662f21110ab6cb40a50a8bca187",
-    "files": 105,
+    "file": "relax-translator-v1.1.0-source.zip",
+    "sha256": "b8c691570da4f4a6f3c821415d211894f17ddc565e99e3bc1fd7da276f62c5c2",
+    "files": 112,
     "personalReferencesAndCredentialsExcluded": true
   },
   "unitTests": {
-    "tests": 58,
+    "tests": 68,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
   "androidFlowTests": {
-    "tests": 22,
+    "tests": 25,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -38,13 +38,13 @@
   },
   "releaseSmokeChecks": {
     "android11": {
-      "version": "1.0.0",
-      "versionCode": 9,
-      "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
+      "version": "1.1.0",
+      "versionCode": 10,
+      "apkSha256": "1b5b8ec0ff94035d6343c3938d4655b3bca7fd40d2d93ae6eb60faf86dbc8203",
       "android": "11",
       "passed": true,
       "upgrade": {
-        "from": "0.6.0",
+        "from": "1.0.0",
         "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
         "preset_and_history_preserved": true
       },
@@ -54,17 +54,19 @@
         "translation mark rendered in UI",
         "theme badge removed from settings header",
         "upgrade preserved preset and original translation",
-        "detail readings retained and no false correction section"
+        "detail readings retained and no false correction section",
+        "extra content switch works on signed release",
+        "translation-only retranslation has no unrequested readings"
       ]
     },
     "android15": {
-      "version": "1.0.0",
-      "versionCode": 9,
-      "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
+      "version": "1.1.0",
+      "versionCode": 10,
+      "apkSha256": "1b5b8ec0ff94035d6343c3938d4655b3bca7fd40d2d93ae6eb60faf86dbc8203",
       "android": "15",
       "passed": true,
       "upgrade": {
-        "from": "0.6.0",
+        "from": "1.0.0",
         "originalTranslation": "能给我一点时间吗？我想把这件事做好。",
         "preset_and_history_preserved": true
       },
@@ -74,45 +76,51 @@
         "translation mark rendered in UI",
         "theme badge removed from settings header",
         "upgrade preserved preset and original translation",
-        "detail readings retained and no false correction section"
+        "detail readings retained and no false correction section",
+        "extra content switch works on signed release",
+        "translation-only retranslation has no unrequested readings"
       ]
     }
   },
   "productScreenshots": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "android": "15",
     "passed": true,
     "actualScreenshots": true,
     "providerRequests": false,
-    "apkSha256": "3e7a55d766f5c67647f4ddbfe59e241d2d81bb1d931fe233ec58cecae2d7303a",
+    "apkSha256": "1b5b8ec0ff94035d6343c3938d4655b3bca7fd40d2d93ae6eb60faf86dbc8203",
     "screenshots": {
+      "extras": {
+        "file": "docs/assets/screenshots/extras.png",
+        "sha256": "9f5eb9a2da04b9aabbe5f35d2d433ed33e97c6eae33c0084723aedb7c17031ec"
+      },
       "home": {
         "file": "docs/assets/screenshots/home.png",
-        "sha256": "bca9463082cbf0e6c36ab8fed0e4598438c7df5ffe094146a7f0831bcf9a8ddf"
+        "sha256": "31ce69cd0d58abe2403d9cd2b5f42a63988be4ae5948189cdf914c74b03eea5e"
       },
       "translation": {
         "file": "docs/assets/screenshots/translation.png",
-        "sha256": "37514bfc169e8026dc625eb1988fc0f7b232d27875bf5cfa67591889f6d591c2"
+        "sha256": "08ce0d026d552de2c1dac88ada8edfb2ca454681a61d3e2eed2fd1668a1936f3"
       },
       "vocabulary": {
         "file": "docs/assets/screenshots/vocabulary.png",
-        "sha256": "90eb94295736ebffc653f54345dca0ef30e14e340be3d1367f890ea320afb685"
+        "sha256": "f2b346ce9681def8ec41720c27e696c036e8d7017618c595693352a3c86c5df0"
       },
       "japanese": {
         "file": "docs/assets/screenshots/japanese.png",
-        "sha256": "708b73b54a8bd415db59fb9182c112f06697b43a4466b550fc6dc2c6e390dbcb"
+        "sha256": "c46d8639d252f35aa49c675376788b0b40a32d4fc356b6f316adcc66c6903904"
       },
       "context": {
         "file": "docs/assets/screenshots/context.png",
-        "sha256": "5f40d50987223d1ff1fd45f03b74afade83dbea883e69f24de2d18fa1bdbc0bf"
+        "sha256": "89b49a1fb3e7f1720eefdb10fd99a035f6fde1ff6f7f89675dc858ac3e2b7bba"
       },
       "settings": {
         "file": "docs/assets/screenshots/settings.png",
-        "sha256": "03e946a5778d64305c69832338fe88d9e8e092c06f42aad16a52f9793d58765f"
+        "sha256": "867b38fa218f01089d5819a846f05fb9b9854bfa65cc59adf820fb5c95edbabd"
       },
       "models": {
         "file": "docs/assets/screenshots/models.png",
-        "sha256": "cc1ecc5521a3040e948c61b136ee33752f7f2990af27a309a7ebc6383970e885"
+        "sha256": "de1b4c63088214bbf443b6474bc18326af56c8f78c81a1fe3c53f4c2936999b4"
       }
     }
   },

@@ -18,7 +18,7 @@ import kotlin.coroutines.resumeWithException
 class TranslationClient(private val client: OkHttpClient = OkHttpClient.Builder()
     .connectTimeout(20, TimeUnit.SECONDS).readTimeout(120, TimeUnit.SECONDS).callTimeout(150, TimeUnit.SECONDS)
     .followRedirects(false).followSslRedirects(false).build()) {
-    suspend fun translate(snapshot: RequestSnapshot, apiKey: String, imageData: String? = null): Translation = execute(snapshot, apiKey, imageData, false)
+    suspend fun translate(snapshot: RequestSnapshot, apiKey: String, imageData: String? = null): Translation = execute(snapshot, apiKey, imageData, !snapshot.preset.extras.requestsAny)
     suspend fun translateFast(snapshot: RequestSnapshot, apiKey: String, imageData: String? = null): Translation = execute(snapshot, apiKey, imageData, true)
 
     private suspend fun execute(snapshot: RequestSnapshot, apiKey: String, imageData: String?, translationOnly: Boolean): Translation {
@@ -56,18 +56,20 @@ class TranslationClient(private val client: OkHttpClient = OkHttpClient.Builder(
         }
         val result = parseResponse(body)
         if (translationOnly) return Translation(result.text, warning = result.warning.replace("模型返回了纯文本译文，未提供结构化解析。", "").trim())
-        val sourceReading = result.sourceReading.copy(language = result.sourceReading.language.ifBlank { result.learning.sourceLanguage })
-        val targetReading = result.targetReading.copy(language = snapshot.preset.target)
-        val incomplete = !sourceReading.hasContent || !targetReading.hasContent ||
+        val selected = result.withExtras(snapshot.preset.extras)
+        val sourceReading = selected.sourceReading.copy(language = selected.sourceReading.language.ifBlank { selected.learning.sourceLanguage })
+        val targetReading = selected.targetReading.copy(language = snapshot.preset.target)
+        val incomplete = snapshot.preset.extras.includes(ExtraSection.READINGS) && (!sourceReading.hasContent || !targetReading.hasContent ||
             (sourceReading.language.startsWith("ja") && (sourceReading.kana.isBlank() || sourceReading.romaji.isBlank())) ||
-            (snapshot.preset.target.startsWith("ja") && (targetReading.kana.isBlank() || targetReading.romaji.isBlank()))
-        return result.copy(sourceReading = sourceReading, targetReading = targetReading,
-            warning = listOf(result.warning, if (incomplete) "模型未完整提供双向注音，可重新翻译补充。" else "").filter(String::isNotBlank).joinToString("\n"))
+            (snapshot.preset.target.startsWith("ja") && (targetReading.kana.isBlank() || targetReading.romaji.isBlank())))
+        return selected.copy(sourceReading = sourceReading, targetReading = targetReading,
+            warning = listOf(selected.warning, if (incomplete) "模型未完整提供双向注音，可重新翻译补充。" else "").filter(String::isNotBlank).joinToString("\n"))
     }
 }
 
 const val SAMPLE_SOURCE = "Could you give me a moment? I want to get this right."
-fun demo(snapshot: RequestSnapshot): Translation {
+fun demo(snapshot: RequestSnapshot): Translation = demoComplete(snapshot).withExtras(snapshot.preset.extras)
+private fun demoComplete(snapshot: RequestSnapshot): Translation {
     val target = snapshot.preset.target
     val source = snapshot.source.trim()
     if (snapshot.image != null) return Translation("接入支持图片的模型后，这里将显示图片译文。", info = "图片已成功添加，当前为本地演示。", warning = "本地演示不识别图片，也不会上传任何内容。请在模型管理中添加视觉模型。")
@@ -89,18 +91,18 @@ fun demo(snapshot: RequestSnapshot): Translation {
         "不用着急，慢慢来。" -> when (target) { "en" -> "Take your time. There’s no rush."; "ja" -> "急がなくて大丈夫です。ゆっくりどうぞ。"; "zh-CN" -> source; else -> null }
         else -> null
     }
-    val learning = if (!snapshot.preset.showInfo) LearningInfo() else when {
+    val learning = when {
         source == SAMPLE_CHINESE && target == "en" -> chineseLearning()
         source == SAMPLE_SOURCE && target in listOf("zh-CN", "zh-TW") -> foreignLearning()
         else -> LearningInfo()
     }
     return if (known != null) Translation(known,
-        evaluation = if (snapshot.preset.showEvaluation) "表达自然、清晰。具体词汇的语义区别与适用场景见上方解析。" else "",
-        suggestions = if (snapshot.preset.showSuggestions) when (source) {
+        evaluation = "表达自然、清晰。可结合具体关系与场景选择语气。",
+        suggestions = when (source) {
             SAMPLE_CHINESE -> "用于工作沟通时，也可说：This role would suit you well.（这个职位会很适合你。）"
             SAMPLE_SOURCE -> "更口语：Give me a second — I want to get this right.\n更正式：Could I have a little more time to make sure this is done properly?"
             else -> "可结合实际关系与语境调整礼貌程度。"
-        } else "",
+        },
         warning = "预置例句的本地演示结果，未请求真实模型。", learning = learning,
         sourceReading = demoSourceReading(source), targetReading = demoTargetReading(source, target))
     else Translation("这里将显示${languageName(target)}译文。", info = "试试预置例句，或在模型管理中配置自己的接口。", warning = "当前为本地演示，未对这段输入进行真实翻译，也不会上传内容。")

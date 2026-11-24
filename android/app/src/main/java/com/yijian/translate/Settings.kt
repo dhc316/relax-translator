@@ -56,11 +56,14 @@ import androidx.compose.ui.window.DialogProperties
                     }
                 }
             }
-            SectionTitle("输出内容", "当前预设：${vm.workingPreset.name.ifBlank { "新的预设" }}")
+            SectionTitle("额外内容", "当前预设：${vm.workingPreset.name.ifBlank { "新的预设" }}")
             GroupCard {
-                SettingRow("book", "词汇与语言解析", "词义辨析、用法与有错误时的纠错") { Switch(vm.workingPreset.showInfo, { value -> vm.updatePreset { it.copy(showInfo = value) } }) }
-                SettingRow("note", "评价", "语气、礼貌程度和歧义") { Switch(vm.workingPreset.showEvaluation, { value -> vm.updatePreset { it.copy(showEvaluation = value) } }) }
-                SettingRow("spark", "表达建议", "替代表达与适用场景") { Switch(vm.workingPreset.showSuggestions, { value -> vm.updatePreset { it.copy(showSuggestions = value) } }) }
+                SettingRow("spark", "请求额外内容", vm.workingPreset.extras.summary()) {
+                    Switch(vm.workingPreset.extras.enabled, { value -> vm.updatePreset { it.copy(extraContent = it.extras.copy(enabled = value)) } })
+                }
+                Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 10.dp)) {
+                    ExtraContentChoices(vm.workingPreset.extras) { next -> vm.updatePreset { it.copy(extraContent = next) } }
+                }
             }
             SectionTitle("外观")
             GroupCard {

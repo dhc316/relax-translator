@@ -48,6 +48,87 @@ class AppJourneyTest {
     }
     @After fun finish() { scenario?.close() }
 
+    @Test fun extraContentMenuAutosavesPerPresetAndFitsBesideLanguageAndContext() {
+        val first = Preset("extras-a", context = ContextPolicy(true, "both", 100, 10080))
+        val second = Preset("extras-b", extraContent = ExtraContent(false, setOf(ExtraSection.SUGGESTIONS)))
+        launch(AppData(presets = listOf(first, second), selectedPreset = first.id, fontScale = 1.3f))
+        compose.onNodeWithText("额外内容").assertIsDisplayed()
+        val extraBounds = compose.onNodeWithTag("extrasSelector").fetchSemanticsNode().boundsInRoot
+        val languageBounds = compose.onNodeWithText("简体中文").fetchSemanticsNode().boundsInRoot
+        assertTrue(languageBounds.right <= extraBounds.left)
+        compose.onNodeWithText("额外内容").performClick()
+        compose.onNodeWithTag("extrasEnabled").assertIsOn()
+        for (section in ExtraSection.entries.filter { it != ExtraSection.VOCABULARY }) {
+            compose.onNodeWithTag("extra-${section.id}").performScrollTo().performClick().assertIsOff()
+        }
+        compose.onNodeWithTag("extrasEnabled").performClick().assertIsOff()
+        compose.onNodeWithTag("extra-vocabulary").performScrollTo().assertIsNotEnabled().assertIsOn()
+        compose.waitUntil(10000) {
+            AppStore(context).load().presets.first().extras == ExtraContent(false, setOf(ExtraSection.VOCABULARY))
+        }
+        back()
+        scenario!!.onActivity { androidx.lifecycle.ViewModelProvider(it)[AppViewModel::class.java].choosePreset(second.id) }
+        compose.waitForIdle()
+        compose.onNodeWithText("额外内容").performClick()
+        compose.onNodeWithTag("extrasEnabled").assertIsOff()
+        compose.onNodeWithTag("extra-suggestions").performScrollTo().assertIsOn()
+        back()
+        scenario!!.onActivity { androidx.lifecycle.ViewModelProvider(it)[AppViewModel::class.java].choosePreset(first.id) }
+        compose.waitForIdle()
+        compose.onNodeWithText("额外内容").performClick()
+        compose.onNodeWithTag("extrasEnabled").performClick().assertIsOn()
+        compose.onNodeWithTag("extra-vocabulary").performScrollTo().assertIsOn()
+        compose.onNodeWithTag("extra-readings").performScrollTo().assertIsOff()
+        back()
+        compose.waitUntil(10000) { AppStore(context).load().presets.first().extras == ExtraContent(sections = setOf(ExtraSection.VOCABULARY)) }
+        scenario!!.close(); scenario = ActivityScenario.launch(MainActivity::class.java)
+        compose.waitUntil(15000) { runCatching { compose.onAllNodesWithTag("extrasSelector").fetchSemanticsNodes().isNotEmpty() }.getOrDefault(false) }
+        compose.onNodeWithText("额外内容").performClick()
+        compose.onNodeWithTag("extrasEnabled").assertIsOn()
+        compose.onNodeWithTag("extra-vocabulary").performScrollTo().assertIsOn()
+        compose.onNodeWithTag("extra-readings").performScrollTo().assertIsOff()
+        screenshot("v11-extras-menu-restored")
+    }
+
+    @Test fun disablingExtrasSendsOneRequestAndShowsOnlyTheTranslation() {
+        val server = MockWebServer().apply { start(InetAddress.getByName("127.0.0.1"), 0) }
+        try {
+            val payload = JSONObject().put("translation", "仅译文模式已生效").put("evaluation", "不应该显示的评价")
+                .put("source_reading", JSONObject().put("phonetic", "不应该显示的注音"))
+            server.enqueue(MockResponse().setBody(JSONObject().put("choices", JSONArray().put(JSONObject()
+                .put("message", JSONObject().put("content", payload.toString())))).toString()))
+            val model = ModelConfig("extras-network", "接口测试", "http://127.0.0.1:${server.port}/v1", "test")
+            val preset = Preset("extras-only", modelId = model.id, extraContent = ExtraContent(enabled = false))
+            launch(AppData(presets = listOf(preset), models = listOf(ModelConfig.demo, model), selectedPreset = preset.id, draft = "Hello"))
+            compose.onNodeWithContentDescription("开始翻译").performClick()
+            compose.waitUntil(15000) { AppStore(context).load().records.any { it.result.text == "仅译文模式已生效" } }
+            compose.onNodeWithTag("translationResult").assertTextEquals("仅译文模式已生效")
+            assertEquals(1, server.requestCount)
+            val record = AppStore(context).load().records.single()
+            assertEquals("complete", record.analysisState); assertTrue(record.result.evaluation.isBlank())
+            compose.onNodeWithTag("analysisProgress").assertDoesNotExist()
+            compose.onNodeWithTag("readingsSection").assertDoesNotExist()
+            compose.onNodeWithText("表达评价").assertDoesNotExist()
+            screenshot("v11-translation-only")
+        } finally { server.shutdown() }
+    }
+
+    @Test fun selectingVocabularyOnlyHidesReadingsUsageEvaluationAndSuggestions() {
+        val preset = Preset("extras-vocab", target = "en", extraContent = ExtraContent(sections = setOf(ExtraSection.VOCABULARY)))
+        launch(AppData(presets = listOf(preset), selectedPreset = preset.id, draft = SAMPLE_CHINESE))
+        compose.onNodeWithContentDescription("开始翻译").performClick()
+        compose.waitUntil(15000) { AppStore(context).load().records.any { it.analysisState == "complete" } }
+        compose.onNodeWithTag("detailScroll").performScrollToNode(hasText("一个意思，多种表达"))
+        compose.onNodeWithText("一个意思，多种表达").assertIsDisplayed()
+        compose.onNodeWithTag("readingsSection").assertDoesNotExist()
+        compose.onNodeWithText("搭配与语法").assertDoesNotExist()
+        compose.onNodeWithText("表达评价").assertDoesNotExist()
+        compose.onNodeWithText("表达建议").assertDoesNotExist()
+        val result = AppStore(context).load().records.single().result
+        assertTrue(result.learning.vocabulary.isNotEmpty()); assertTrue(result.learning.usage.isBlank())
+        assertFalse(result.sourceReading.hasContent); assertTrue(result.evaluation.isBlank())
+    }
+
     private fun verifyHeaderLayout(fontScale: Float, image: String) {
         val preset = Preset("header", "日常翻译")
         val record = Record("header-record", RequestSnapshot("header", "hello", null, preset, ModelConfig.demo, emptyList()), Translation("你好"))

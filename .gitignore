@@ -23,9 +23,9 @@ docs/参考图清单.json
 
 # Current signed delivery only. Historical builds and local evidence stay local.
 artifacts/*
-!artifacts/v1.0.0/
-artifacts/v1.0.0/*
-!artifacts/v1.0.0/relax-translator-v1.0.0.apk
-!artifacts/v1.0.0/verification.json
-!artifacts/v1.0.0/smoke-android11.json
-!artifacts/v1.0.0/smoke-android15.json
+!artifacts/v1.1.0/
+artifacts/v1.1.0/*
+!artifacts/v1.1.0/relax-translator-v1.1.0.apk
+!artifacts/v1.1.0/verification.json
+!artifacts/v1.1.0/smoke-android11.json
+!artifacts/v1.1.0/smoke-android15.json

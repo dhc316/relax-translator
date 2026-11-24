@@ -250,13 +250,20 @@ val PresetPosition = SemanticsPropertyKey<Float>("presetPosition")
                 }
             }
         }
-        Row(Modifier.fillMaxWidth().height(44.dp).padding(horizontal = 22.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().height(44.dp).padding(horizontal = 14.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.weight(1f)) {
                 PageBlend(pager, Modifier.fillMaxWidth()) { page, interactive ->
                     val preset = vm.data.presets.getOrNull(page) ?: vm.workingPreset
                     BottomSelector("globe", languageName(preset.target), false, interactive) { openMenu("language") }
                 }
                 if (menu == "language") UpMenu(closeMenu) { LanguageMenu(vm, closeMenu) }
+            }
+            Box(Modifier.weight(1f).testTag("extrasSelector")) {
+                PageBlend(pager, Modifier.fillMaxWidth()) { page, interactive ->
+                    val preset = vm.data.presets.getOrNull(page) ?: vm.workingPreset
+                    BottomSelector("spark", "额外内容", preset.extras.requestsAny, interactive) { openMenu("extras") }
+                }
+                if (menu == "extras") UpMenu(closeMenu) { ExtraContentMenu(vm) }
             }
             Box(Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
                 PageBlend(pager, Modifier.fillMaxWidth()) { page, interactive ->
@@ -270,10 +277,10 @@ val PresetPosition = SemanticsPropertyKey<Float>("presetPosition")
 }
 
 @Composable private fun BottomSelector(icon: String, text: String, active: Boolean, interactive: Boolean, onClick: () -> Unit) {
-    Row(Modifier.clip(RoundedCornerShape(15.dp)).clickable(enabled = interactive, onClick = onClick).padding(horizontal = 9.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
-        Glyph(icon, Modifier.size(16.dp), if (active) Ink.Blue else Ink.Muted)
-        Text(text, fontSize = 11.sp, color = if (active) Ink.Blue else Ink.Muted, modifier = Modifier.padding(start = 7.dp, end = 5.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Glyph("up", Modifier.size(11.dp), if (active) Ink.Blue else Ink.Muted)
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp)).clickable(enabled = interactive, onClick = onClick).padding(horizontal = 4.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Glyph(icon, Modifier.size(15.dp), if (active) Ink.Blue else Ink.Muted)
+        Text(text, fontSize = 10.sp, color = if (active) Ink.Blue else Ink.Muted, modifier = Modifier.weight(1f, fill = false).padding(start = 4.dp, end = 3.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Glyph("up", Modifier.size(10.dp), if (active) Ink.Blue else Ink.Muted)
     }
 }
 

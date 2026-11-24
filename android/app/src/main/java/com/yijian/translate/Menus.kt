@@ -6,6 +6,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +16,8 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
@@ -175,6 +178,38 @@ private class AboveAnchor(private val margin: Int) : PopupPositionProvider {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             TextButton(onClick = { onDismiss(); onAdd() }) { Glyph("plus", Modifier.size(17.dp), Ink.Blue); Spacer(Modifier.width(5.dp)); Text("添加模型", fontSize = 13.sp) }
             TextButton(onClick = { onDismiss(); onManage() }) { Text("管理模型", fontSize = 13.sp) }
+        }
+    }
+}
+
+@Composable fun ExtraContentMenu(vm: AppViewModel) {
+    val extras = vm.workingPreset.extras
+    MenuHeading("额外内容", "为当前预设选择要请求的内容", trailing = {
+        Switch(extras.enabled, { enabled -> vm.updatePreset { it.copy(extraContent = it.extras.copy(enabled = enabled)) } },
+            modifier = Modifier.testTag("extrasEnabled").height(32.dp))
+    })
+    Column(Modifier.verticalScroll(rememberScrollState()).testTag("extrasOptions")) {
+        Surface(color = Ink.Pale, shape = RoundedCornerShape(14.dp)) {
+            Text(if (!extras.enabled) "关闭后只请求译文，不发送额外内容请求。\n已选项目会保留，开启后继续使用。"
+                else if (extras.sections.isEmpty()) "尚未勾选项目，目前只请求译文。" else "${extras.summary()}\n译文先显示，所选内容随后补充。",
+                fontSize = 11.sp, lineHeight = 18.sp, color = Ink.Muted, modifier = Modifier.fillMaxWidth().padding(12.dp))
+        }
+        Spacer(Modifier.height(8.dp))
+        ExtraContentChoices(extras) { next -> vm.updatePreset { it.copy(extraContent = next) } }
+    }
+}
+
+@Composable fun ExtraContentChoices(extras: ExtraContent, onChange: (ExtraContent) -> Unit) {
+    ExtraSection.entries.forEach { section ->
+        Row(Modifier.fillMaxWidth().testTag("extra-${section.id}")
+            .toggleable(section in extras.sections, enabled = extras.enabled, role = Role.Checkbox) {
+                onChange(extras.copy(sections = if (it) extras.sections + section else extras.sections - section))
+            }.padding(vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f).padding(end = 8.dp)) {
+                Text(section.title, fontSize = 13.sp, color = if (extras.enabled) Ink.Dark else Ink.Muted)
+                Text(section.description, fontSize = 10.sp, lineHeight = 16.sp, color = Ink.Muted, modifier = Modifier.padding(top = 3.dp))
+            }
+            Checkbox(section in extras.sections, onCheckedChange = null, enabled = extras.enabled)
         }
     }
 }

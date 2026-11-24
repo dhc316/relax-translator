@@ -112,12 +112,13 @@ import kotlinx.coroutines.launch
             if (record != null && !vm.detailDirty) {
                 val result = record.result
                 val learning = result.learning
+                val extras = request.preset.extras
                 if (record.analysisState != "complete") item(key = "analysis-progress") {
                     Surface(color = Ink.Pale.copy(alpha = .8f), shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth().testTag("analysisProgress")) {
                         Row(Modifier.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
                             if (record.analysisState == "pending") CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
                             Column(Modifier.padding(start = if (record.analysisState == "pending") 12.dp else 0.dp)) {
-                                Text(if (record.analysisState == "pending") "译文已就绪，正在补充注音与词汇解析…" else "译文已保留", color = Ink.Blue, fontSize = 12.sp)
+                                Text(if (record.analysisState == "pending") "译文已就绪，正在补充所选的额外内容…" else "译文已保留", color = Ink.Blue, fontSize = 12.sp)
                                 if (record.analysisError.isNotBlank()) Text(record.analysisError, color = Ink.Muted, fontSize = 11.sp, lineHeight = 18.sp, modifier = Modifier.padding(top = 6.dp))
                                 if (record.analysisState != "pending") Text("可点击上方“重新翻译”补充完整结果。", color = Ink.Muted, fontSize = 11.sp, modifier = Modifier.padding(top = 6.dp))
                             }
@@ -125,7 +126,7 @@ import kotlinx.coroutines.launch
                     }
                 }
                 if (record.analysisState == "complete") {
-                    item(key = "readings") {
+                    if (extras.includes(ExtraSection.READINGS)) item(key = "readings") {
                         Column(Modifier.testTag("readingsSection")) {
                             DetailHeading("注音与读音", "speaker")
                             Surface(color = Ink.Card, shape = RoundedCornerShape(24.dp)) {
@@ -138,17 +139,17 @@ import kotlinx.coroutines.launch
                             }
                         }
                     }
-                    if (learning.showCorrections) item { CorrectionSection(learning) }
-                    if (learning.vocabulary.isNotEmpty()) item {
+                    if (extras.includes(ExtraSection.CORRECTIONS) && learning.showCorrections) item { CorrectionSection(learning) }
+                    if (extras.includes(ExtraSection.VOCABULARY) && learning.vocabulary.isNotEmpty()) item {
                         Column {
                             DetailHeading(if (learning.direction == "zh_to_foreign") "一个意思，多种表达" else "词汇与用法", "book")
                             learning.vocabulary.forEach { word -> VocabularyCard(word) }
                         }
                     }
-                    if (learning.usage.isNotBlank()) item { LearningSection("搭配与语法", "note", learning.usage) }
-                    if (result.info.isNotBlank() && !learning.hasContent) item { LearningSection("补充说明", "book", result.info) }
-                    if (result.evaluation.isNotBlank()) item { LearningSection("表达评价", "note", result.evaluation) }
-                    if (result.suggestions.isNotBlank()) item { LearningSection("表达建议", "spark", result.suggestions) }
+                    if (extras.includes(ExtraSection.USAGE) && learning.usage.isNotBlank()) item { LearningSection("搭配与语法", "note", learning.usage) }
+                    if (extras.includes(ExtraSection.BACKGROUND) && result.info.isNotBlank()) item { LearningSection("补充说明", "book", result.info) }
+                    if (extras.includes(ExtraSection.EVALUATION) && result.evaluation.isNotBlank()) item { LearningSection("表达评价", "note", result.evaluation) }
+                    if (extras.includes(ExtraSection.SUGGESTIONS) && result.suggestions.isNotBlank()) item { LearningSection("表达建议", "spark", result.suggestions) }
                 }
                 if (result.warning.isNotBlank()) item { Text(result.warning, color = Ink.Muted, fontSize = 10.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 5.dp)) }
                 item { Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
